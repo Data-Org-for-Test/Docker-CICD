@@ -9,10 +9,12 @@ jobs:
     steps:
     - name: Checkout repository
       uses: actions/checkout@v2
+      
     - name: Build and tag Docker image
       run: |
-        sudo -S docker build -t mywebsite08 .
+        sudo -S docker build -t mywebsite08
         sudo -S docker save mywebsite08:latest | gzip > mywebsite08.tar.gz
+        
     - name: Transfer Docker image to EC2
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
