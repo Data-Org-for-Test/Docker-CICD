@@ -25,12 +25,14 @@ jobs:                    // Describes a set of steps that are executed on the sa
         HOST: ${{ secrets.HOST }}
       run: |
         # Setup SSH key and permissions
-        mkdir -p ~/.ssh
-        echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
+        mkdir -p ~/.ssh        //ensure that existance of ~/.ssh directory
+        echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa    //write the private key into .ssh/id_rsa file
+        chmod 600 ~/.ssh/id_rsa   //change the permission
+        ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts   //ssh-keyscan used to fetch the ssh server host key and append to .ssh/known_hosts 
+        //.ssh/known_hosts - used to store the ssh host key of ssh server for security best practice
         # Transfer image using scp
         scp -i ~/.ssh/id_rsa -P 22 mywebsite08.tar.gz ubuntu@$HOST:/tmp
+        //securly copy the image into /tmp directory
 
         
     - name: Deploy to EC2
@@ -43,9 +45,14 @@ jobs:                    // Describes a set of steps that are executed on the sa
         echo "$SSH_PRIVATE_KEY" | tr -d '\r' > ~/.ssh/id_rsa
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
+        
         # SSH and Docker commands to run on EC2
         ssh -i ~/.ssh/id_rsa ubuntu@$HOST '
-          sudo -S docker load < /tmp/mywebsite08.tar.gz
-          sudo -S docker stop mywebsite08 || true
+          sudo -S docker load < /tmp/mywebsite08.tar.gz  //load cmd ( the docker image from the /tmp
+          //Load an image or repository from a tar archive (even if compressed with gzip, bzip2, xz or zstd) from a file or STDIN. It restores both images and tags.
+          sudo -S docker stop mywebsite08 || true  
+          //The docker stop command stops the container gracefully and provides a safe way out.
           sudo -S docker rm mywebsite08 || true
+           //removes or deletes Docker containers sib=nle or multiple container before this conainer must be stopped
           sudo -S docker run -itd -p 8082:80 mywebsite08:latest
+          //run the container on 8080 port
