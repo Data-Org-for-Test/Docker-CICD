@@ -4,6 +4,7 @@ on:
   push:
     branches:
      - main  # or your default branch
+
 jobs:                    // Describes a set of steps that are executed on the same runner (execution environment).
   build-and-deploy:
     runs-on: self-hosted             //Specifies that the job will run on a self-hosted runner.
