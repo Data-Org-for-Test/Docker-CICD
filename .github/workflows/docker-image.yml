@@ -1,5 +1,6 @@
-name: Build and Deploy to EC2  //specify the name github action workflow
-on:                    //specify the triggere on every push to the specify branches ,in this we have specify main
+name: Docker Image CI
+
+on:
   push:
     branches:
      - main  # or your default branch
