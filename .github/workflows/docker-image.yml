@@ -27,6 +27,7 @@ jobs:
         ssh-keyscan -H "$HOST" >> ~/.ssh/known_hosts
         # Transfer image using scp
         scp -i ~/.ssh/id_rsa -P 22 mywebsite08.tar.gz ubuntu@$HOST:/tmp
+        
     - name: Deploy to EC2
       env:
         SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
