@@ -20,7 +20,7 @@ jobs:
       name: Build & push Docker image
       with:
         image: gitforcodedash/demo
-        #tags: v1, latest
+        tags: mywebsite08.tar.gz, latest
         registry: docker.io
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }} 
@@ -48,5 +48,5 @@ jobs:
           sudo -S docker load < /tmp/mywebsite08.tar.gz
           sudo -S docker stop mywebsite08 || true
           sudo -S docker rm mywebsite08 || true
-          sudo -S docker run -itd -p 2025:80 mywebsite08:latest
+          sudo -S docker run -itd -p 2023:80 mywebsite08:latest
         '
